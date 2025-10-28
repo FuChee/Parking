@@ -19,31 +19,34 @@ export default function SignupScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [saveProfile, { isLoading }] = useSaveProfileMutation();
 
-  const handleSave = async () => {
-    if (!name.trim() || !email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
+const handleSave = async () => {
+  if (!name.trim() || !email.trim() || !password.trim()) {
+    Alert.alert('Error', 'Please fill in all fields');
+    return;
+  }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
-      Alert.alert('Error', 'Please enter a valid email address');
-      return;
-    }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.trim())) {
+    Alert.alert('Error', 'Please enter a valid email address');
+    return;
+  }
 
-    try {
-      await saveProfile({ name, email, password }).unwrap();
-      Alert.alert('Success', 'You have registered successfully!', [
+  try {
+    await saveProfile({ name, email, password }).unwrap();
+    Alert.alert(
+      'Success',
+      'You have registered successfully!',
+      [
         {
           text: 'OK',
-          onPress: () =>
-            navigation.reset({ index: 0, routes: [{ name: 'Login' }] }),
+          onPress: () => navigation.reset({ index: 0, routes: [{ name: 'Login' }] }),
         },
-      ]);
-    } catch (err) {
-      Alert.alert('Error', 'User with same email already exists');
-    }
-  };
+      ]
+    );
+  } catch (err) {
+    Alert.alert('Error', 'User with same email already exists');
+  }
+};
 
   const isButtonActive = name.trim() && email.trim() && password.trim();
 
@@ -79,7 +82,7 @@ export default function SignupScreen({ navigation }) {
           />
 
           <TouchableOpacity
-            style={[styles.button, !isButtonActive && styles.buttonDisabled]}
+            style={[styles.button, !isButtonActive && styles.disabledButton]}
             onPress={handleSave}
             disabled={!isButtonActive || isLoading}
           >
@@ -103,68 +106,54 @@ export default function SignupScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff', // white background
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#f9f9f9' },
+  scrollContainer: { 
+    flexGrow: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 20 },
   card: {
     width: '100%',
-    backgroundColor: '#fff', // white card
-    paddingVertical: 30,
-    paddingHorizontal: 25,
-    borderRadius: 10,
+    backgroundColor: '#fff',
+    padding: 25,
+    borderRadius: 12,
+    elevation: 4,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 2,
-    elevation: 2,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
   },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#000', // black title
-    marginBottom: 25,
-    textAlign: 'center',
-  },
+  title: { 
+    fontSize: 28, 
+    fontWeight: 'bold', 
+    marginBottom: 25, 
+    alignSelf: 'center' },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc', 
+    borderColor: '#ccc',
     borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    padding: 12,
     marginBottom: 15,
     fontSize: 16,
-    backgroundColor: '#f9f9f9', 
-    color: '#000', 
+    backgroundColor: '#fefefe',
   },
-  button: {
-    backgroundColor: '#B7A078',
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonDisabled: {
-    backgroundColor: '#C3B091',
-  },
-  buttonText: {
+  button: { 
+    backgroundColor: '#007bff', 
+    paddingVertical: 14, 
+    borderRadius: 8, 
+    alignItems: 'center' },
+  disabledButton: { 
+    backgroundColor: '#aaa' },
+  buttonText: { 
     color: '#fff', 
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  loginLink: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  loginText: {
-    color: '#C3B091',
-    fontSize: 14,
-    fontWeight: '600',
-  },
+    fontSize: 16, 
+    fontWeight: 'bold' },
+  loginLink: { 
+    marginTop: 20, 
+    alignItems: 'center' },
+  loginText: { 
+    color: '#007bff', 
+    fontSize: 14 },
 });
