@@ -20,29 +20,26 @@ export default function ProfileScreen({ navigation }) {
   };
 
   const handleSave = async () => {
-    console.log('🟡 user:', user);
-    console.log('🟡 editedName:', editedName);
-    console.log('🟡 editedEmail:', editedEmail);
-  if (!editedName.trim() || !editedEmail.trim()) {
-    Alert.alert('Error', 'Name and email cannot be empty.');
-    return;
-  }
+    if (!editedName.trim() || !editedEmail.trim()) {
+      Alert.alert('Error', 'Name and email cannot be empty.');
+      return;
+    }
 
-  try {
-    const { data } = await updateProfile({
-      user_id: user.id, 
-      name: editedName,
-      email: editedEmail,
-    }).unwrap();
+    try {
+      const { data } = await updateProfile({
+        user_id: user.id, 
+        name: editedName,
+        email: editedEmail,
+      }).unwrap();
 
-    setUser({ ...user, name: editedName, email: editedEmail });
-    setIsEditing(false);
-    Alert.alert('Success', 'Profile updated successfully.');
-  } catch (err) {
-    console.error('Error updating profile:', err);
-    Alert.alert('Error', 'Failed to update profile.');
-  }
-};
+      setUser({ ...user, name: editedName, email: editedEmail });
+      setIsEditing(false);
+      Alert.alert('Success', 'Profile updated successfully.');
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      Alert.alert('Error', 'Failed to update profile.');
+    }
+  };
 
   return (
     <View style={styles.container}>
