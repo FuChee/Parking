@@ -6,6 +6,16 @@ export const profileApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Profile'],
   endpoints: (builder) => ({
+    saveProfile: builder.mutation({
+      async queryFn(profile) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .insert([profile]);
+        if (error) return { error };
+        return { data };
+      },
+      invalidatesTags: ['Profile'],
+    }),
     updateProfile: builder.mutation({
       async queryFn({ user_id, name, email }) {
 
@@ -28,4 +38,4 @@ export const profileApi = createApi({
   }),
 });
 
-export const { useUpdateProfileMutation } = profileApi;
+export const { useUpdateProfileMutation, useSaveProfileMutation } = profileApi;
